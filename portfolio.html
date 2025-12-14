@@ -276,12 +276,14 @@
         }
 
         #project2-card .project-image {
-            background-image: url('images/screenshot1-CS2png.png');
+            /* CHANGEMENT: screenshot2-CS2png.png au lieu de screenshot1-CS2png.png */
+            background-image: url('images/screenshot2-CS2png.png'); 
             background-color: var(--primary);
         }
         
         #project3-card .project-image {
-            background-image: url('images/screenshot1-HM.png');
+            /* CHANGEMENT: screenshot2-happymeter.png au lieu de screenshot1-HM.png */
+            background-image: url('images/screenshot2-happymeter.png'); 
             background-color: var(--secondary);
         }
 
@@ -770,7 +772,7 @@
                 <div class="project-image"></div>
                 <div class="project-content">
                     <h3>Projet 1 - Anime No Sekai</h3>
-                    <p>Développement d'un site de catalogue d'animés avec des informations détaillées et des fonctionnalités de note/favoris en utilisant une API. Un travail de groupe formateur.</p>
+                    <p>Développement en groupe d'un site de catalogue d'animés avec des informations détaillées et des fonctionnalités de note/favoris en utilisant une API.</p>
                     <div class="project-tags">
                         <span class="tag">HTML</span>
                         <span class="tag">CSS</span>
@@ -783,7 +785,7 @@
                 <div class="project-image"></div>
                 <div class="project-content">
                     <h3>Projet 2 - Application Mobile</h3>
-                    <p>Création d'une application mobile cross-platform de gestion de tâches avec synchronisation cloud, système d'authentification et mode hors-ligne.</p>
+                    <p>Création d'un jeu dynamique d'aléatoire, d'achat et de revente d'objets fictifs.</p>
                     <div class="project-tags">
                         <span class="tag">React</span>
                         <span class="tag">Node.js</span>
@@ -795,7 +797,7 @@
                 <div class="project-image"></div>
                 <div class="project-content">
                     <h3>Projet 3 - Happy Meter</h3>
-                    <p>Développement d'un outil de mesure du 'bonheur' en temps réel pour un environnement de travail (stage 1ère année). Expérience enrichissante avec JSON et JavaScript.</p>
+                    <p>Développement d'un outil de mesure du 'bonheur' en temps réel pour des bornes (stage 1ère année). Expérience enrichissante avec JSON et JavaScript.</p>
                     <div class="project-tags">
                         <span class="tag">JavaScript</span>
                         <span class="tag">HTML</span>
@@ -874,7 +876,7 @@
                 <div class="timeline-date">2025 - 2026</div>
                 <h3>BTS SIO - 2ème année</h3>
                 <p>Le Rebours - Paris</p>
-                <p>Option SLAM - Développement des compétences en développement d'applications.</p>
+                <p>Option SLAM - Développement des compétences en développementde sites web et d'applications.</p>
             </div>
             <div class="timeline-item">
                 <div class="timeline-date">2024 - 2025</div>
@@ -948,11 +950,11 @@
                 title: "Jeu CS2 Crate Simulator",
                 subtitle: "Projet scolaire - 1ère année BTS SIO",
                 description: "Création d'un jeu d'ouverture de caisses du jeu-vidéo Counter Strike 2. On ouvre des caisses avec des probabilités de trouver des armes plus ou moins rares et plus ou moins en bon état, avec possibilité de les revendre ou d'en acheter directement dans une boutique.",
-                duration: "4 mois",
-                type: "Projet personnel",
-                status: "En cours",
+                duration: "2 mois",
+                type: "Projet scolaire",
+                status: "Terminé",
                 tech: ["JavaFX", "SceneBuilder"],
-                learning: "J'ai découvert le développement mobile cross-platform et la gestion d'état. Ce projet m'a aussi enseigné l'importance de l'UX/UI mobile et la gestion des données en mode hors-ligne avec la synchronisation.",
+                learning: "J'ai découvert grâce à ce projet l'investissement dans un projet relativement personnel, l'autonomie face aux erreurs, aux idées plus ou moins réalisables qui me venaient.",
                 screenshots: [
                     "images/screenshot1-CS2png.png",
                     "images/screenshot2-CS2png.png",
@@ -963,14 +965,16 @@
             project3: {
                 title: "Projet 3 - Happy Meter",
                 subtitle: "Stage Imperiatec - 1ère année BTS SIO",
-                description: "Développement d'un système de 'Happy Meter' (compteur de bonheur) pour l'entreprise Imperiatec. L'objectif était de créer une interface interactive et dynamique pour mesurer l'ambiance et le moral des employés, en utilisant principalement JavaScript pour la logique et la manipulation de données JSON.",
+                description: "Développement d'un système de 'Happy Meter' pour l'entreprise Imperiatec. L'objectif était de créer une interface interactive et dynamique pour mesurer la satisfaction des clients avec un court questionnaire qui serait affiché sur une borne, en utilisant principalement JavaScript pour le frontEnd et les données ont été manipulées grâce à JSON.",
                 duration: "1 mois",
                 type: "Stage",
                 status: "Terminé",
                 tech: ["JavaScript", "HTML", "CSS", "JSON"],
                 learning: "Ce stage m'a permis de mettre en pratique mes compétences en développement front-end, notamment la manipulation du DOM avec JavaScript et l'utilisation de données structurées via JSON. J'ai aussi appris à m'intégrer dans un environnement professionnel et à livrer un projet selon les spécifications d'un client.",
                 screenshots: [
-                    "images/screenshot1-HM.png"
+                    "images/screenshot1-happymeter.png",
+                    "images/screenshot2-happymeter.png",
+                    "images/screenshot3-happymeter.png"
                 ]
             }
         };
