@@ -255,12 +255,34 @@
 
         .project-image {
             height: 200px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background-size: cover;
+            background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 4rem;
             color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+        
+        /* Styles spécifiques pour les images de projet */
+        #project1-card .project-image {
+            background-image: url('images/screenshot1-ANS.png');
+            background-color: var(--primary);
+        }
+
+        #project2-card .project-image {
+            background-image: url('images/screenshot1-CS2png.png');
+            background-color: var(--primary);
+        }
+        
+        #project3-card .project-image {
+            background-image: url('images/screenshot1-HM.png');
+            background-color: var(--secondary);
         }
 
         .project-content {
@@ -270,6 +292,18 @@
         .project-content h3 {
             color: var(--primary);
             margin-bottom: 0.5rem;
+        }
+        
+        .project-content p {
+            font-size: 0.95rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+            height: 4.5em; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
         }
 
         .project-tags {
@@ -385,7 +419,7 @@
             padding: 2rem;
         }
 
-        /* Modal */
+        /* Modal (Détails du projet) */
         .modal {
             display: none;
             position: fixed;
@@ -492,18 +526,146 @@
             margin-bottom: 1.5rem;
         }
 
-        .screenshot-placeholder {
+        .screenshot-item {
             aspect-ratio: 16/9;
             background: var(--light);
             border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer; /* Rendre l'aperçu cliquable */
+            transition: transform 0.2s ease;
+        }
+        
+        .screenshot-item:hover {
+            transform: scale(0.98);
+        }
+        
+        .screenshot-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* --- LIGHTBOX STYLES (Nouvelle Modal pour Agrandissement) --- */
+
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95); /* Fond plus sombre */
+            z-index: 3000; /* Au-dessus de toutes les autres modals */
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        #lightbox.active {
+            display: flex;
+        }
+
+        #lightbox-img-container {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            align-items: center;
+        }
+
+        #lightbox-img {
+            display: block;
+            max-width: 100%;
+            max-height: 100vh;
+            border-radius: 10px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+        }
+
+        .lightbox-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 3rem;
+            padding: 1rem;
+            cursor: pointer;
+            user-select: none;
+            opacity: 0.8;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            line-height: 1;
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            color: var(--gray);
-            border: 2px dashed var(--gray);
         }
 
+        .lightbox-control:hover {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        #prev-btn {
+            left: -80px;
+        }
+
+        #next-btn {
+            right: -80px;
+        }
+        
+        #lightbox-close {
+            position: absolute;
+            top: -50px; 
+            right: -50px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #lightbox-close:hover {
+            opacity: 1;
+            transform: rotate(90deg);
+            background: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            #prev-btn {
+                left: 10px;
+                background: rgba(0, 0, 0, 0.7);
+                font-size: 2rem;
+                width: 40px;
+                height: 40px;
+            }
+
+            #next-btn {
+                right: 10px;
+                background: rgba(0, 0, 0, 0.7);
+                font-size: 2rem;
+                width: 40px;
+                height: 40px;
+            }
+            
+            #lightbox-close {
+                top: 10px; 
+                right: 10px;
+            }
+        }
+
+        /* Autres styles (inclus pour la complétude) */
+        
         .modal-info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -604,23 +766,24 @@
     <section id="projets">
         <h2>Mes Projets</h2>
         <div class="projects-grid">
-            <div class="project-card" onclick="openModal('project1')">
-                <div class="project-image">🌐</div>
+            <div class="project-card" id="project1-card" onclick="openModal('project1')">
+                <div class="project-image"></div>
                 <div class="project-content">
-                    <h3>Projet 1</h3>
-                    <p>Description de votre premier projet réalisé durant votre formation. Expliquez le contexte, les technologies utilisées et les résultats obtenus.</p>
+                    <h3>Projet 1 - Anime No Sekai</h3>
+                    <p>Développement d'un site de catalogue d'animés avec des informations détaillées et des fonctionnalités de note/favoris en utilisant une API. Un travail de groupe formateur.</p>
                     <div class="project-tags">
-                        <span class="tag">PHP</span>
-                        <span class="tag">MySQL</span>
-                        <span class="tag">Bootstrap</span>
+                        <span class="tag">HTML</span>
+                        <span class="tag">CSS</span>
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">API</span>
                     </div>
                 </div>
             </div>
-            <div class="project-card" onclick="openModal('project2')">
-                <div class="project-image">📱</div>
+            <div class="project-card" id="project2-card" onclick="openModal('project2')">
+                <div class="project-image"></div>
                 <div class="project-content">
-                    <h3>Projet 2</h3>
-                    <p>Description de votre deuxième projet. Mettez en avant vos contributions et les compétences développées pendant ce projet.</p>
+                    <h3>Projet 2 - Application Mobile</h3>
+                    <p>Création d'une application mobile cross-platform de gestion de tâches avec synchronisation cloud, système d'authentification et mode hors-ligne.</p>
                     <div class="project-tags">
                         <span class="tag">React</span>
                         <span class="tag">Node.js</span>
@@ -628,22 +791,22 @@
                     </div>
                 </div>
             </div>
-            <div class="project-card" onclick="openModal('project3')">
-                <div class="project-image">🔐</div>
+            <div class="project-card" id="project3-card" onclick="openModal('project3')">
+                <div class="project-image"></div>
                 <div class="project-content">
-                    <h3>Projet 3</h3>
-                    <p>Description de votre troisième projet. Détaillez les défis rencontrés et comment vous les avez surmontés.</p>
+                    <h3>Projet 3 - Happy Meter</h3>
+                    <p>Développement d'un outil de mesure du 'bonheur' en temps réel pour un environnement de travail (stage 1ère année). Expérience enrichissante avec JSON et JavaScript.</p>
                     <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Django</span>
-                        <span class="tag">PostgreSQL</span>
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">HTML</span>
+                        <span class="tag">CSS</span>
+                        <span class="tag">JSON</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Modal pour les détails du projet -->
     <div id="projectModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">×</button>
@@ -653,11 +816,9 @@
             </div>
             <div class="modal-body">
                 <div class="modal-section">
-                    <h3>📸 Aperçus</h3>
+                    <h3>📸 Aperçus (Cliquez pour agrandir)</h3>
                     <div class="modal-screenshots" id="modalScreenshots">
-                        <div class="screenshot-placeholder">🖼️</div>
-                        <div class="screenshot-placeholder">🖼️</div>
-                    </div>
+                        </div>
                 </div>
                 
                 <div class="modal-section">
@@ -686,9 +847,7 @@
                 <div class="modal-section">
                     <h3>🛠️ Technologies utilisées</h3>
                     <div class="modal-tags" id="modalTech">
-                        <span class="modal-tag">HTML</span>
-                        <span class="modal-tag">CSS</span>
-                    </div>
+                        </div>
                 </div>
 
                 <div class="modal-section">
@@ -696,6 +855,15 @@
                     <p id="modalLearning">Compétences et apprentissages tirés de ce projet...</p>
                 </div>
             </div>
+        </div>
+    </div>
+    
+    <div id="lightbox">
+        <div id="lightbox-img-container">
+            <img id="lightbox-img" src="" alt="Aperçu agrandi du projet">
+            <div id="prev-btn" class="lightbox-control">❮</div>
+            <div id="next-btn" class="lightbox-control">❯</div>
+            <div id="lightbox-close" onclick="closeLightbox()">✕</div>
         </div>
     </div>
 
@@ -718,7 +886,7 @@
                 <div class="timeline-date">2023 - 2024</div>
                 <h3>Licence LEA - 1ère année</h3>
                 <p>Université Paris 8</p>
-                <p>Apprentissage appronfondi de l'anglais et de l'espagnol.</p>
+                <p>Apprentissage approfondi de l'anglais et de l'espagnol.</p>
             </div>
             <div class="timeline-item">
                 <div class="timeline-date">2020 - 2023</div>
@@ -752,37 +920,58 @@
     </footer>
 
     <script>
+        // Variables globales pour la Lightbox
+        let currentImages = [];
+        let currentIndex = 0;
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
         // Données des projets
         const projectsData = {
             project1: {
-                title: "Projet 1 - Site Web Anime No Sekai",
+                title: "Site Web Anime No Sekai",
                 subtitle: "Projet scolaire - 1ère année BTS SIO",
-                description: "Développement d'un site de catalogue d'animés à l'aide d'une API, avec des informations sur l'animé comme le nombre d'épisodes, les différents personnages, le genre ou le studio d'animation. Le site inclut des fontionnalités de note, de mise en favoris ou en watchlist.",
+                description: "Développement d'un site de catalogue d'animés à l'aide d'une API, avec des informations sur l'animé comme le nombre d'épisodes, les différents personnages, le genre ou le studio d'animation. Le site inclut des fonctionnalités de note, de mise en favoris ou en watchlist.",
                 duration: "2 mois",
                 type: "Projet scolaire",
                 status: "Terminé",
-                tech: ["HTML", "CSS", "API", "JavaScript"],
-                learning: "Ce projet m'a permis de comprendre le fonctionnement d'une API et comment s'en servir. Ceci étant un travail de groupe, nous nous sommes attribués des missions afin d'être plus efficaces et cela m'a appris un peu plus le travail en équipe."
+                tech: ["HTML", "CSS", "JavaScript", "API"],
+                learning: "Ce projet m'a permis de comprendre le fonctionnement d'une API et comment s'en servir. Ceci étant un travail de groupe, nous nous sommes attribués des missions afin d'être plus efficaces et cela m'a appris un peu plus le travail en équipe.",
+                screenshots: [                           
+                    "images/screenshot1-ANS.png",
+                    "images/screenshot2-ANS.png",
+                    "images/screenshot3-ANS.png",
+                    "images/screenshot4-ANS.png"
+                ]
             },
             project2: {
-                title: "Projet 2 - Application Mobile",
-                subtitle: "Projet personnel",
-                description: "Création d'une application mobile cross-platform permettant de gérer des tâches quotidiennes avec synchronisation cloud. L'application inclut un système d'authentification, des notifications push et un mode hors-ligne.",
+                title: "Jeu CS2 Crate Simulator",
+                subtitle: "Projet scolaire - 1ère année BTS SIO",
+                description: "Création d'un jeu d'ouverture de caisses du jeu-vidéo Counter Strike 2. On ouvre des caisses avec des probabilités de trouver des armes plus ou moins rares et plus ou moins en bon état, avec possibilité de les revendre ou d'en acheter directement dans une boutique.",
                 duration: "4 mois",
                 type: "Projet personnel",
                 status: "En cours",
-                tech: ["React", "Node.js", "API REST"],
-                learning: "J'ai découvert le développement mobile cross-platform et la gestion d'état. Ce projet m'a aussi enseigné l'importance de l'UX/UI mobile et la gestion des données en mode hors-ligne avec la synchronisation."
+                tech: ["JavaFX", "SceneBuilder"],
+                learning: "J'ai découvert le développement mobile cross-platform et la gestion d'état. Ce projet m'a aussi enseigné l'importance de l'UX/UI mobile et la gestion des données en mode hors-ligne avec la synchronisation.",
+                screenshots: [
+                    "images/screenshot1-CS2png.png",
+                    "images/screenshot2-CS2png.png",
+                    "images/screenshot3-CS2png.png",
+                    "images/screenshot4-CS2png.png"
+                ]
             },
             project3: {
-                title: "Projet 3 - Système de Gestion",
-                subtitle: "Stage en entreprise",
-                description: "Développement d'un système de gestion interne pour automatiser les processus de suivi des clients et de facturation. Le système inclut des tableaux de bord, des rapports PDF automatiques et une gestion des permissions utilisateurs.",
-                duration: "6 semaines",
+                title: "Projet 3 - Happy Meter",
+                subtitle: "Stage Imperiatec - 1ère année BTS SIO",
+                description: "Développement d'un système de 'Happy Meter' (compteur de bonheur) pour l'entreprise Imperiatec. L'objectif était de créer une interface interactive et dynamique pour mesurer l'ambiance et le moral des employés, en utilisant principalement JavaScript pour la logique et la manipulation de données JSON.",
+                duration: "1 mois",
                 type: "Stage",
                 status: "Terminé",
-                tech: ["Python", "Django", "PostgreSQL"],
-                learning: "Ce projet professionnel m'a appris à travailler en équipe avec Git, à respecter des délais et à communiquer avec des clients. J'ai également approfondi mes connaissances en architecture logicielle."
+                tech: ["JavaScript", "HTML", "CSS", "JSON"],
+                learning: "Ce stage m'a permis de mettre en pratique mes compétences en développement front-end, notamment la manipulation du DOM avec JavaScript et l'utilisation de données structurées via JSON. J'ai aussi appris à m'intégrer dans un environnement professionnel et à livrer un projet selon les spécifications d'un client.",
+                screenshots: [
+                    "images/screenshot1-HM.png"
+                ]
             }
         };
 
@@ -790,7 +979,10 @@
             const project = projectsData[projectId];
             const modal = document.getElementById('projectModal');
             
-            // Remplir le modal avec les données
+            // Stocker les images du projet actuel pour la lightbox
+            currentImages = project.screenshots || [];
+
+            // Remplir le modal avec les données textuelles
             document.getElementById('modalTitle').textContent = project.title;
             document.getElementById('modalSubtitle').textContent = project.subtitle;
             document.getElementById('modalDescription').textContent = project.description;
@@ -802,14 +994,38 @@
             // Remplir les technologies
             const techContainer = document.getElementById('modalTech');
             techContainer.innerHTML = '';
-            project.tech.forEach(tech => {
+            (project.tech || []).forEach(tech => {
                 const tag = document.createElement('span');
                 tag.className = 'modal-tag';
                 tag.textContent = tech;
                 techContainer.appendChild(tag);
             });
             
-            // Afficher le modal
+            // Remplir les captures d'écran et les rendre cliquables
+            const screenshotsContainer = document.getElementById('modalScreenshots');
+            screenshotsContainer.innerHTML = ''; 
+
+            if (currentImages.length > 0) {
+                currentImages.forEach((src, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'screenshot-item';
+                    item.onclick = () => openLightbox(index); // Ajout de la fonction openLightbox
+                    
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = `Capture d'écran ${index + 1} de ${project.title}`;
+                    item.appendChild(img);
+                    screenshotsContainer.appendChild(item);
+                });
+            } else {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'screenshot-placeholder';
+                placeholder.textContent = '🖼️';
+                screenshotsContainer.appendChild(placeholder);
+            }
+
+            
+            // Afficher le modal de projet
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -819,18 +1035,69 @@
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
+        
+        // --- Fonctions Lightbox (Galerie) ---
+        
+        function openLightbox(index) {
+            if (currentImages.length === 0) return;
+            currentIndex = index;
+            updateLightboxImage();
+            lightbox.classList.add('active');
+        }
 
-        // Fermer le modal en cliquant en dehors
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+        }
+
+        function navigateLightbox(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) {
+                currentIndex = currentImages.length - 1;
+            } else if (currentIndex >= currentImages.length) {
+                currentIndex = 0;
+            }
+            updateLightboxImage();
+        }
+
+        function updateLightboxImage() {
+            lightboxImg.src = currentImages[currentIndex];
+        }
+
+        // Événements pour la navigation
+        document.getElementById('prev-btn').onclick = () => navigateLightbox(-1);
+        document.getElementById('next-btn').onclick = () => navigateLightbox(1);
+        
+        // Fermer le modal de projet en cliquant en dehors
         document.getElementById('projectModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
             }
         });
+        
+        // Fermer la lightbox en cliquant sur le fond (sauf l'image/boutons)
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this || e.target.id === 'lightbox-img-container') {
+                closeLightbox();
+            }
+        });
 
-        // Fermer le modal avec la touche Echap
+        // Fermer le modal/lightbox avec la touche Echap
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                closeModal();
+                if (lightbox.classList.contains('active')) {
+                    closeLightbox();
+                } else if (document.getElementById('projectModal').classList.contains('active')) {
+                    closeModal();
+                }
+            }
+            
+            // Navigation par flèches dans la lightbox
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') {
+                    navigateLightbox(-1);
+                } else if (e.key === 'ArrowRight') {
+                    navigateLightbox(1);
+                }
             }
         });
 
