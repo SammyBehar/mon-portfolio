@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>HappyMeter - Donnez-nous votre avis !</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <style>
+    .page { display: none; }
+    .page.active { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- Page 1 -->
+<div id="page1" class="page active">
+<h2>Pour vous, 5 questions <strong>en moins d'une <span id="trigger-logout">minute</span></strong>!</h2>
+  <h1>Qu'avez-vous pensé de la <strong>qualité de l'accueil </strong>? (Question 1/5)</h1>
+  <div class="faces-container" data-question="accueil">
+    <div class="face content" data-value="content">😀</div>
+    <div class="face neutre" data-value="neutre">😐</div>
+    <div class="face mécontent" data-value="mécontent">🙁</div>
+  </div>
+  <div class="button-row">
+    <button onclick="nextPage()">Suivant</button>
+  </div>
+</div>
+
+<!-- Page 2 -->
+<div id="page2" class="page">
+  <h1><strong>Les horaires</strong> ont-ils été respectés ? (Question 2/5)</h1>
+  <div class="faces-container" data-question="horaires">
+    <div class="face content" data-value="content">😀</div>
+    <div class="face neutre" data-value="neutre">😐</div>
+    <div class="face mécontent" data-value="mécontent">🙁</div>
+  </div>
+
+  <h1>Qu'avez-vous pensé <strong>des échanges avec le professionnel de santé</strong> ? (Question 3/5)</h1>
+  <div class="faces-container" data-question="echanges">
+    <div class="face content" data-value="content">😀</div>
+    <div class="face neutre" data-value="neutre">😐</div>
+    <div class="face mécontent" data-value="mécontent">🙁</div>
+  </div>
+
+  <div class="button-row">
+    <button onclick="previousPage()">Précédent</button>
+    <button onclick="nextPage()">Suivant</button>
+  </div>
+</div>
+
+<!-- Page 3 -->
+<div id="page3" class="page">
+  <h1>Est-ce que les <strong>informations délivrées vous ont été utiles</strong> ? (Question 4/5)</h1>
+  <div class="faces-container" data-question="informations">
+    <div class="face content" data-value="content">😀</div>
+    <div class="face neutre" data-value="neutre">😐</div>
+    <div class="face mécontent" data-value="mécontent">🙁</div>
+  </div>
+
+  <h1>Avez-vous des <strong>précisions à apporter</strong>? (Question 5/5)</h1>
+  <textarea id="commentaire"></textarea>
+
+  <div class="button-row">
+    <button onclick="previousPage()">Précédent</button>
+    <button onclick="nextPage()">Suivant</button>
+  </div>
+</div>
+
+<!-- Page 4 -->
+<div id="page4" class="page">
+  <h2><strong>Merci !</strong></h2>
+  <h2>Pensez à <strong>cliquer sur le bouton "Terminé" </strong>ci-dessous.</h2>
+  <div class="button-row">
+    <button onclick="previousPage()">Précédent</button>
+    <button onclick="submitFinal()">Terminé</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" style="display:none;"></div>
+<div class="merci-popup" id="merciPopup" style="display:none;">
+  <div class="popup-emoji" id="popupEmoji"></div>
+  <div>Merci pour votre vote !</div>
+</div>
+
+<script>
+  let currentPage = 1;
+  const totalPages = 4;
+  const emojiMap = { content: '😀', neutre: '😐', mécontent: '🙁' };
+  const answers = {};
+
+  function previousPage() {
+    document.getElementById(`page${currentPage}`).classList.remove('active');
+    currentPage--;
+    if (currentPage >= 1) {
+      document.getElementById(`page${currentPage}`).classList.add('active');
+    }
+  }
+
+  function nextPage() {
+    document.getElementById(`page${currentPage}`).classList.remove('active');
+    currentPage++;
+    if (currentPage <= totalPages) {
+      document.getElementById(`page${currentPage}`).classList.add('active');
+    }
+  }
+
+  function getNoteFromEmotion(emotion) {
+    return emotion === 'content' ? 5 : emotion === 'neutre' ? 3 : emotion === 'mécontent' ? 1 : 0;
+  }
+
+  function submitFinal() {
+    const commentaire = document.getElementById('commentaire').value;
+    const payload = { votes: answers, commentaire };
+
+    fetch('/vote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(() => {
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('merciPopup').style.display = 'flex';
+      document.getElementById('popupEmoji').textContent = '🙏';
+
+      setTimeout(() => window.location.href = '/index.html', 3000);
+    }).catch(() => {
+      alert("Une erreur est survenue.");
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Bloque le retour
+    if (window.history && window.history.pushState) {
+      history.pushState(null, null, location.href);
+      window.addEventListener('popstate', () => {
+        history.pushState(null, null, location.href);
+      });
+    }
+
+    // Vérifie session
+    fetch('/session-check')
+      .then(res => { if (!res.ok) window.location.href = '/login.html'; })
+      .catch(() => window.location.href = '/login.html');
+
+    // Gère les clics sur chaque bloc
+    document.querySelectorAll('.faces-container').forEach(container => {
+  const question = container.dataset.question;
+  const buttons = container.querySelectorAll('.face');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('selected'));
+      button.classList.add('selected');
+
+      const emotion = button.dataset.value;
+      const note = getNoteFromEmotion(emotion);
+
+      answers[question] = { note, emotion };
+    });
+  });
+});
+
+    // Déconnexion longue pression
+    const logoutTrigger = document.getElementById('trigger-logout');
+let logoutTimer;
+
+logoutTrigger.addEventListener('mousedown', startPress);
+logoutTrigger.addEventListener('touchstart', startPress);
+logoutTrigger.addEventListener('mouseup', cancelPress);
+logoutTrigger.addEventListener('mouseleave', cancelPress);
+logoutTrigger.addEventListener('touchend', cancelPress);
+
+function startPress() {
+  logoutTimer = setTimeout(() => {
+    window.location.href = '/logout';
+  }, 3000); // 30 secondes
+}
+
+function cancelPress() {
+  clearTimeout(logoutTimer);
+}
+  });
+</script>
+</body>
+</html>

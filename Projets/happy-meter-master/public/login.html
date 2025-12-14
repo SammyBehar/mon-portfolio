@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    .logo {
+      max-width: 400px;
+      margin-bottom: 30px;
+    }
+
+    .logo-container {
+      position: absolute; 
+      top: 10px;
+      left: 20px;
+    }
+
+    .login-container {
+      background-color: white;
+      padding: 60px;
+      border-radius: 20px;
+      box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+      margin: 200px auto;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 25px;
+      font-size: 2.3rem;
+    }
+
+    form label {
+      display: block;
+      text-align: left;
+      font-weight: 600;
+      margin-top: 20px;
+      margin-bottom: 5px;
+      font-size: 1.4rem;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      font-size: 1.4rem;
+    }
+
+    input[type="submit"] {
+      margin-top: 40px;
+      width: 100%;
+      background-color: var(--happy-color, #28a92b);
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #1e8d21;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      font-weight: bold;
+      display: none;
+    }
+
+    @media (min-height: 1000px) {
+      .logo {
+        max-width: 400px;
+      }
+
+      .login-container {
+        padding: 90px;
+        border-radius: 40px;
+        max-width: 700px;
+        max-height: 600px;
+        margin: 220px auto;
+      }
+    }
+
+    @media (max-height: 950px) {
+      .logo {
+        max-width: 200px;
+        margin-bottom: 20px;
+      }
+
+      .logo-container {
+        top: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2>Connexion</h2>
+    <form action="/login" method="POST">
+      <label for="username">Nom d'utilisateur :</label>
+      <input type="text" id="username" name="username" required>
+
+      <label for="password">Mot de passe :</label>
+      <input type="password" id="password" name="password" required>
+
+      <div class="error-message" id="error-message"></div>
+
+      <input type="submit" value="Se connecter">
+    </form>
+  </div>
+
+  <script>
+  // Si session déjà active, empêche de revenir ici
+    fetch('/session-check')
+      .then(res => {
+        if (res.ok) {
+          window.location.replace('/index.html');
+        }
+      });
+
+    // Gestion des messages d'erreur dans l'URL
+    const params = new URLSearchParams(window.location.search);
+    const errorBox = document.getElementById("error-message");
+
+    if (params.get("error") === "1") {
+      errorBox.textContent = "Identifiant ou mot de passe incorrect.";
+      errorBox.style.display = "block";
+    } else if (params.get("locked") === "1") {
+      errorBox.textContent = "Cette borne est déjà utilisée sur une autre tablette.";
+      errorBox.style.display = "block";
+    }
+
+    // Bloque le bouton retour depuis l'index
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+      history.pushState(null, null, location.href);
+      window.location.href = '/login.html';
+    };
+  </script>
+</body>
+</html>
