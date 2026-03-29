@@ -36,35 +36,12 @@
             background: var(--bg);
             color: var(--text);
             overflow-x: hidden;
-            cursor: none;
         }
 
         /* ─── SCROLLBAR ─────────────────────────────── */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
-
-        /* ─── CURSOR ────────────────────────────────── */
-        #cursor {
-            width: 12px; height: 12px;
-            background: var(--primary);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 99999;
-            transition: transform 0.15s ease, opacity 0.2s ease;
-            mix-blend-mode: screen;
-        }
-        #cursor-ring {
-            width: 36px; height: 36px;
-            border: 1.5px solid rgba(99,102,241,0.6);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 99998;
-            transition: transform 0.4s cubic-bezier(0.23,1,0.32,1), opacity 0.2s ease;
-        }
-        body:hover #cursor { opacity: 1; }
 
         /* ─── PROGRESS BAR ──────────────────────────── */
         #progress-bar {
@@ -534,7 +511,7 @@
         /* ─── PROJECTS ──────────────────────────────── */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
         }
         .project-card {
@@ -924,12 +901,145 @@
             #next-btn { right: 8px; }
             #lightbox-close { top: 10px; right: 10px; }
             .hero-btns { flex-direction: column; align-items: center; }
-            body { cursor: auto; }
-            #cursor, #cursor-ring { display: none; }
         }
-        @media (max-width: 480px) {
+        @media (max-width: 700px) {
             .projects-grid { grid-template-columns: 1fr; }
         }
+
+        /* ─── VEILLE PANEL ─────────────────────────── */
+        #veille-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(12px);
+            z-index: 4000;
+        }
+        #veille-overlay.active { display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 2rem 1rem; }
+        #veille-panel {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            width: 100%; max-width: 860px;
+            margin: auto;
+            animation: slideUp 0.35s ease;
+            overflow: hidden;
+        }
+        .veille-header {
+            padding: 2rem 2.5rem;
+            background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(168,85,247,0.08));
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+        }
+        .veille-header-left { display: flex; flex-direction: column; gap: 0.3rem; }
+        .veille-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem; font-weight: 700;
+            background: linear-gradient(135deg, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .veille-subtitle { color: var(--text-muted); font-size: 0.88rem; }
+        .veille-close {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid var(--border);
+            color: white; width: 38px; height: 38px;
+            border-radius: 50%; font-size: 1.1rem;
+            cursor: pointer; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .veille-close:hover { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.5); transform: rotate(90deg); }
+        .veille-body { padding: 1.5rem 2rem 2rem; display: flex; flex-direction: column; gap: 1rem; }
+        .veille-article {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: start;
+            gap: 1.25rem;
+            padding: 1.25rem 1.5rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .veille-article:hover {
+            border-color: rgba(99,102,241,0.45);
+            background: var(--card-hover);
+            transform: translateX(4px);
+            box-shadow: 0 8px 30px rgba(99,102,241,0.12);
+        }
+        .veille-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem; font-weight: 700;
+            color: var(--primary);
+            background: rgba(99,102,241,0.1);
+            border: 1px solid rgba(99,102,241,0.2);
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .veille-info { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
+        .veille-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem; font-weight: 600;
+            color: var(--text);
+            line-height: 1.35;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .veille-article:hover .veille-name { color: #a5b4fc; }
+        .veille-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+        .veille-date {
+            font-size: 0.78rem; color: var(--text-muted);
+            display: flex; align-items: center; gap: 0.3rem;
+        }
+        .veille-date::before { content: '📅'; font-size: 0.7rem; }
+        .veille-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+        .veille-tag {
+            padding: 0.18rem 0.6rem;
+            background: rgba(168,85,247,0.1);
+            border: 1px solid rgba(168,85,247,0.25);
+            color: #c084fc;
+            border-radius: 999px;
+            font-size: 0.72rem; font-weight: 500;
+        }
+        .veille-arrow {
+            font-size: 1rem; color: var(--text-muted);
+            flex-shrink: 0; opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .veille-article:hover .veille-arrow { opacity: 1; transform: translateX(3px); }
+        @media (max-width: 600px) {
+            .veille-article { grid-template-columns: auto 1fr; }
+            .veille-arrow { display: none; }
+            .veille-body { padding: 1rem; }
+            .veille-header { padding: 1.5rem; }
+        }
+
+        /* ─── NAV VEILLE BTN ───────────────────────── */
+        .nav-veille-btn {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.45rem 1.1rem;
+            background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(168,85,247,0.2));
+            border: 1px solid rgba(99,102,241,0.35);
+            border-radius: 999px;
+            color: #a5b4fc !important;
+            font-size: 0.85rem !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+            cursor: pointer;
+        }
+        .nav-veille-btn:hover {
+            background: linear-gradient(135deg, rgba(99,102,241,0.35), rgba(168,85,247,0.35)) !important;
+            border-color: rgba(99,102,241,0.6) !important;
+            box-shadow: 0 0 20px rgba(99,102,241,0.3);
+            color: white !important;
+        }
+        .nav-veille-btn::before { content: '📡'; font-size: 0.85rem; }
 
         /* ─── DIVIDER ───────────────────────────────── */
         .section-divider {
@@ -947,10 +1057,6 @@
     <div class="loader-bar"><div class="loader-fill"></div></div>
 </div>
 
-<!-- Custom Cursor -->
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
-
 <!-- Scroll Progress -->
 <div id="progress-bar"></div>
 
@@ -962,8 +1068,23 @@
         <li><a href="#parcours">Parcours</a></li>
         <li><a href="#projets">Projets</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><a href="#" class="nav-veille-btn" onclick="openVeille(event)">Veille 6G</a></li>
     </ul>
 </nav>
+
+<!-- Veille Technologique Panel -->
+<div id="veille-overlay" onclick="closeVeilleOutside(event)">
+    <div id="veille-panel">
+        <div class="veille-header">
+            <div class="veille-header-left">
+                <span class="veille-title">Veille Technologique — 6G</span>
+                <span class="veille-subtitle">10 articles sélectionnés · mars–décembre 2025</span>
+            </div>
+            <button class="veille-close" onclick="closeVeille()">✕</button>
+        </div>
+        <div class="veille-body" id="veille-list"></div>
+    </div>
+</div>
 
 <!-- Hero -->
 <section id="accueil" class="hero">
@@ -1252,37 +1373,6 @@ window.addEventListener('load', () => {
     }, 1400);
 });
 
-/* ─── CURSOR ──────────────────────────────── */
-const cursor = document.getElementById('cursor');
-const cursorRing = document.getElementById('cursor-ring');
-let mx = 0, my = 0, rx = 0, ry = 0;
-
-document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx - 6 + 'px';
-    cursor.style.top = my - 6 + 'px';
-});
-
-function animateRing() {
-    rx += (mx - rx - 18) * 0.12;
-    ry += (my - ry - 18) * 0.12;
-    cursorRing.style.left = rx + 'px';
-    cursorRing.style.top = ry + 'px';
-    requestAnimationFrame(animateRing);
-}
-animateRing();
-
-document.querySelectorAll('a, button, .project-card, .skill-card, .contact-item, .screenshot-item, .lightbox-control').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        cursor.style.transform = 'scale(2.5)';
-        cursorRing.style.transform = 'scale(1.5)';
-    });
-    el.addEventListener('mouseleave', () => {
-        cursor.style.transform = 'scale(1)';
-        cursorRing.style.transform = 'scale(1)';
-    });
-});
-
 /* ─── SCROLL PROGRESS ─────────────────────── */
 const progressBar = document.getElementById('progress-bar');
 window.addEventListener('scroll', () => {
@@ -1529,6 +1619,110 @@ document.addEventListener('keydown', e => {
         if (e.key === 'ArrowLeft') navigateLightbox(-1);
         if (e.key === 'ArrowRight') navigateLightbox(1);
     }
+});
+
+/* ─── VEILLE TECHNOLOGIQUE ────────────────── */
+const veilleArticles = [
+    {
+        name: "Wi-Fi ou 6G : l'Europe sur le point de trancher entre ouverture technologique et contrôle industriel",
+        url: "https://reseau.developpez.com/actu/377568/Wi-Fi-ou-6G-l-Europe-sur-le-point-de-trancher-entre-ouverture-technologique-et-controle-industriel-comment-la-bataille-du-6-GHz-oppose-les-geants-du-Wi-",
+        date: "10 nov. 2025",
+        tags: ["6 GHz", "Wi-Fi", "Europe"]
+    },
+    {
+        name: "Les titres de la presse du lundi 10 novembre 2025 (revue ARCEP)",
+        url: "https://www.arcep.fr/actualites/la-revue-de-presse/2025/novembre/les-titres-de-la-presse-du-lundi-10-novembre-2025.html",
+        date: "10 nov. 2025",
+        tags: ["ARCEP", "régulation", "6G"]
+    },
+    {
+        name: "5G aujourd'hui, 6G demain : comment l'IA transforme les télécoms",
+        url: "https://www.informatiquenews.fr/comment-lia-et-lautomatisation-vont-faconner-les-reseaux-mobiles-du-futur-pierre-gael-chantereau-nokia-107549",
+        date: "22 oct. 2025",
+        tags: ["IA", "automatisation", "réseaux"]
+    },
+    {
+        name: "European Wireless 2025 : cap sur la 5G/6G et les réseaux intelligents à Sophia Antipolis",
+        url: "https://www.phonandroid.com/6g-les-chercheurs-parviennent-deja-a-obtenir-des-debits-a-100-gb-s-dix-fois-plus-que-la-5g.html",
+        date: "4 sept. 2025",
+        tags: ["chercheurs", "100 Gb/s", "débit"]
+    },
+    {
+        name: "6G en France : les opérateurs télécoms déjà sur le pied de guerre",
+        url: "https://selectra.info/telecom/actualites/marche/preparer-la-6g-en-France-consultation-operateurs-arcep",
+        date: "15 oct. 2025",
+        tags: ["France", "ARCEP", "opérateurs"]
+    },
+    {
+        name: "6G : la France lance le compte à rebours avec les opérateurs",
+        url: "https://www.clubic.com/actualite-583072-6g-la-france-lance-le-compte-a-rebours-avec-les-operateurs.html",
+        date: "13 oct. 2025",
+        tags: ["spectre", "ARCEP", "trafic"]
+    },
+    {
+        name: "Course à la 6G : l'Europe craint déjà d'être déclassée",
+        url: "https://www.latribune.fr/technos-medias/telecoms/course-a-la-6g-l-europe-craint-deja-d-etre-declassee-1031275.html",
+        date: "27 août 2025",
+        tags: ["Europe", "compétition", "souveraineté"]
+    },
+    {
+        name: "De la 5G à la 6G : la France se positionne pour dominer les réseaux du futur",
+        url: "https://www.itpro.fr/de-la-5g-a-la-6g-la-france-se-positionne-pour-dominer-les-reseaux-du-futur",
+        date: "20 juin 2025",
+        tags: ["France2030", "investissements", "souveraineté"]
+    },
+    {
+        name: "La 6G se prépare. Et oui, c'est français !",
+        url: "https://www.cnetfrance.fr/news/la-6g-se-prepare-et-oui-cest-francais-430024.htm",
+        date: "29 mars 2025",
+        tags: ["Hermès", "puce", "recherche"]
+    },
+    {
+        name: "Partenariat Airbus–Yuanxin : Qianfan pour une connectivité en vol haut débit et faible latence",
+        url: "https://pepelac.news/fr/posts/id14365-airbus-et-yuanxin-constellation-qianfan-wi-fi-en-vol",
+        date: "5 déc. 2025",
+        tags: ["connectivité", "aérien", "maritime"]
+    }
+];
+
+function buildVeille() {
+    const list = document.getElementById('veille-list');
+    if (list.children.length > 0) return;
+    veilleArticles.forEach((a, i) => {
+        const el = document.createElement('a');
+        el.href = a.url;
+        el.target = '_blank';
+        el.rel = 'noopener noreferrer';
+        el.className = 'veille-article';
+        el.innerHTML = `
+            <div class="veille-num">${String(i + 1).padStart(2, '0')}</div>
+            <div class="veille-info">
+                <span class="veille-name">${a.name}</span>
+                <div class="veille-meta">
+                    <span class="veille-date">${a.date}</span>
+                    <div class="veille-tags">${a.tags.map(t => `<span class="veille-tag">${t}</span>`).join('')}</div>
+                </div>
+            </div>
+            <span class="veille-arrow">→</span>`;
+        list.appendChild(el);
+    });
+}
+
+function openVeille(e) {
+    e.preventDefault();
+    buildVeille();
+    document.getElementById('veille-overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeVeille() {
+    document.getElementById('veille-overlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+function closeVeilleOutside(e) {
+    if (e.target === document.getElementById('veille-overlay')) closeVeille();
+}
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && document.getElementById('veille-overlay').classList.contains('active')) closeVeille();
 });
 </script>
 </body>
