@@ -1059,7 +1059,7 @@
             box-shadow: 0 0 20px rgba(99,102,241,0.3);
             color: white !important;
         }
-        .nav-veille-btn::before { content: '📡'; font-size: 0.85rem; }
+        .nav-veille-btn::before { content: '🎮'; font-size: 0.85rem; }
 
         /* ─── DIVIDER ───────────────────────────────── */
         .section-divider {
@@ -1088,7 +1088,7 @@
         <li><a href="#parcours">Parcours</a></li>
         <li><a href="#projets">Projets</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li><a href="#" class="nav-veille-btn" onclick="openVeille(event)">Veille 6G</a></li>
+        <li><a href="#" class="nav-veille-btn" onclick="openVeille(event)">Veille IA</a></li>
     </ul>
 </nav>
 
@@ -1097,8 +1097,8 @@
     <div id="veille-panel">
         <div class="veille-header">
             <div class="veille-header-left">
-                <span class="veille-title">Veille Technologique — 6G</span>
-                <span class="veille-subtitle">10 articles sélectionnés · mars–décembre 2025</span>
+                <span class="veille-title">Veille Technologique — IA & Jeu Vidéo</span>
+                <span class="veille-subtitle">7 articles sélectionnés · 2025–2026</span>
             </div>
             <button class="veille-close" onclick="closeVeille()">✕</button>
         </div>
@@ -1642,70 +1642,52 @@ document.addEventListener('keydown', e => {
 /* ─── VEILLE TECHNOLOGIQUE ────────────────── */
 const veilleArticles = [
     {
-        name: "Les titres de la presse du lundi 2 mars 2026 (revue ARCEP)",
-        url: "https://www.arcep.fr/actualites/la-revue-de-presse/2026/mars/les-titres-de-la-presse-du-lundi-2-mars-2026.html",
-        date: "2 mars 2026",
-        tags: ["régulation télécom", "fin 2G/3G", "préparation 6G"]
+        name: "Cette avancée de l’IA qui va changer votre façon de jouer en 2026",
+        url: "https://www.news-console.fr/cette-avancee-de-l-ia-qui-va-changer-votre-facon-de-jouer-en-2026/",
+        date: "Mars 2026",
+        tags: ["PNJ", "DLSS 5", "immersion"]
     },
     {
-        name: "La 6G se précise mais le grand public devra patienter",
-        url: "https://www.xavierstuder.com/2026/02/la-6g-se-precise-mais-le-grand-public-devra-encore-patienter/",
-        date: "1 fév. 2026",
-        tags: ["déploiement 2030", "recherche", "retard public"]
+        name: "25 façons dont l’IA continue d’influencer l’industrie du gaming en 2026",
+        url: "https://www.undercontrol.fr/5-facons-dont-lia-continue-dinfluencer-lindustrie-du-gaming-en-2026/",
+        date: "Déc. 2025",
+        tags: ["matchmaking", "personnalisation", "équilibrage"]
     },
     {
-        name: "La 6G fait déjà parler d’elle alors que la 5G n’est pas encore partout",
-        url: "https://www.degrouptest.com/actualite/la-6g-fait-deja-parler-d-elle-alors-que-la-5g-n-est-pas-encore-partout",
-        date: "4 fév. 2026",
-        tags: ["5G incomplète", "anticipation", "stratégie opérateurs"]
+        name: "GDC 2026 : l’IA générative devient un repoussoir dans le jeu vidéo",
+        url: "https://gusandco.net/2026/01/31/ia-generative-jeu-video-gdc-2026-rejet/",
+        date: "31 jan. 2026",
+        tags: ["rejet", "studios", "créatifs"]
     },
     {
-        name: "Arrivée de la 6G : ce qu’il faut savoir",
-        url: "https://www.laposte.fr/la-poste-mobile/arrivee-6G",
-        date: "2026",
-        tags: ["nouveaux usages", "réalité virtuelle", "débits élevés"]
+        name: "L’IA est le futur du jeu vidéo, que ça vous plaise ou non",
+        url: "https://www.jeuxvideo.com/news/2058242/l-ia-est-le-futur-du-jeu-video-que-ca-vous-plaise-ou-non-cette-marque-gaming-connue-de-tous-l-affirme.htm",
+        date: "22 jan. 2026",
+        tags: ["Razer", "investissement", "controverse"]
     },
     {
-        name: "France 6G : faites rayonner vos innovations en France et à l’international",
-        url: "https://www.images-et-reseaux.com/france-6g-faites-rayonner-vos-innovations-en-france-et-a-linternational/",
-        date: "9 janv. 2026",
-        tags: ["projets français", "innovation", "salon MWC"]
+        name: "À quels jeux peut-on jouer avec l’IA : Le guide complet 2026",
+        url: "https://www.jenova.ai/fr/resources/what-games-can-you-play-with-ai",
+        date: "9 fév. 2026",
+        tags: ["agents IA", "Steam", "studios"]
     },
     {
-        name: "MWC 2026 : les annonces majeures autour de la 6G",
-        url: "https://www.techradar.com/pro/live/mwc-2026-were-live-in-barcelona-ahead-of-the-worlds-biggest-mobile-show",
-        date: "mars 2026",
-        tags: ["intelligence artificielle", "réseaux futurs", "industries télécom"]
+        name: "Les 10 meilleurs logiciels d’IA en 2026",
+        url: "https://gamingcampus.fr/boite-a-outils/les-10-meilleurs-logiciels-dia-en-2026.html",
+        date: "5 jan. 2026",
+        tags: ["outils", "développement", "création"]
     },
     {
-        name: "Samsung accélère sur la recherche 6G avec de nouveaux tests",
-        url: "https://es.wikipedia.org/wiki/6G",
-        date: "janv. 2026",
-        tags: ["tests réseau", "prototype 6G", "innovation"]
-    },
-    {
-        name: "La Chine intensifie ses tests autour de la 6G",
-        url: "https://es.wikipedia.org/wiki/6G",
-        date: "janv. 2026",
-        tags: ["tests grandeur nature", "avance technologique", "réseaux"]
-    },
-    {
-        name: "Qualcomm prépare la transition vers la 6G avec ses nouvelles puces",
-        url: "https://es.wikipedia.org/wiki/6G",
-        date: "mars 2026",
-        tags: ["puces réseau", "préparation 6G", "technologie mobile"]
-    },
-    {
-        name: "Les acteurs mondiaux s’organisent pour standardiser la 6G",
-        url: "https://www.techradar.com/pro/live/mwc-2026-were-live-in-barcelona-ahead-of-the-worlds-biggest-mobile-show",
-        date: "mars 2026",
-        tags: ["normes 6G", "coopération mondiale", "standards"]
+        name: "Intelligence artificielle dans le jeu vidéo — Wikipédia",
+        url: "https://fr.wikipedia.org/wiki/Intelligence_artificielle_dans_le_jeu_vid%C3%A9o",
+        date: "Mis à jour 2026",
+        tags: ["histoire", "algorithmes", "PNJ"]
     }
 ];
 
 function buildVeille() {
     const list = document.getElementById('veille-list');
-    if (list.children.length > 0) return;
+    list.innerHTML = '';
     veilleArticles.forEach((a, i) => {
         const el = document.createElement('a');
         el.href = a.url;
